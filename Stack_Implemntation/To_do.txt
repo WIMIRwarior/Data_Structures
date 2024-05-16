@@ -1,3 +1,1 @@
-1. Translate polish parts of code into english.
-
-2. Prepare user manual .txt file.
+Nothing to do right now. :)

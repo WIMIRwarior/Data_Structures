@@ -1,0 +1,47 @@
+							###	Stack_Implementation - USER MANUAL	###						
+REVISION:01
+DATE:16/05/2024
+AUTHOR:KAROL CZERNECKI
+SOURCE CODE FILE NAME: Stack_Implementation.c
+
+TABLE OF CHANGES:
+
+REVISION NUMBER		||	DESCRIPTION												||	AUTHOR	|| DATE 	||
+==========================================================================================================================================================================
+			||														|| 		||		||
+==========================================================================================================================================================================
+
+1. PROGRAM DESCRIPTION:
+	Program shows the implementation of stack data structure.
+	Each element of the list is containing a single integer value.
+	Program allows user to put and take items to and from the stack by using text commands.
+
+2. HOW TO OPERATE IT:
+	To communicate with the program user has to use command window and pass through it proper commands.
+	Each command should be confirmed by clicking the ENTER button.
+	Below there is a list of allowed commands with short descriptions and example of usage:
+
+NOTICE : Words in the "[]" brackets are descriptions of command argument.
+	
+	COMMAND		||	DESCRIPTION							||	EXAMPLE								||
+==========================================================================================================================================================================
+Push [VALUE]		|| Add new item with specified value to the stack.			|| Push 1	//Add new item with value 1 to the list.		||
+==========================================================================================================================================================================
+Pop			|| Take the last item from the stack. Free the memory.			|| Pop		//Take the last item from the the stack.		||
+==========================================================================================================================================================================
+EXIT			|| Close the program.							|| EXIT									||
+==========================================================================================================================================================================
+
+3. ERROR NOTIFICATIONS EXPLANATION:
+
+	ERROR NOTIFICATION		||	DESCRIPTION														||
+==========================================================================================================================================================================
+	EMPTY LIST			|| Aperars when user tried to take item from the head or tail of the empty list.						||
+==========================================================================================================================================================================
+	INVALID COMMAND			|| Aperars when user typed and confirmed the not proper command.								||
+==========================================================================================================================================================================
+
+
+
+
+

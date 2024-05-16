@@ -3,38 +3,38 @@
 #include<string.h>
 
 
-typedef struct el
+typedef struct stack_item
 {
     int value;
-    struct el_stosu* next;
-}el_stosu;
+    struct stack_item* next;
+}stack_item;
 
-void Push(int val,el_stosu** ptr)
+void Push(int val,stack_item** ptr)
 {
-    el_stosu* nowy_element = (el_stosu*)malloc(sizeof(nowy_element));
-    nowy_element->value = val;
-    nowy_element->next = *ptr;
-    *ptr=nowy_element;
-    printf("Wrzucilem %d na stos\n",val);
+    stack_item* new_item = (stack_item*)malloc(sizeof(new_item));
+    new_item->value = val;
+    new_item->next = *ptr;
+    *ptr=new_item;
+    printf(" %d added to the stack.\n",val);
 }
 
 
-int Pop(el_stosu** ptr)
+int Pop(stack_item** ptr)
 {
     if((*ptr)==NULL)
     {
-      printf("\n****ERROR***\n****EMPTY STACK***\n\n");
+      printf("\n****ERROR: EMPTY STACK***\n\n");
       return 1;
     }
 
     int val;
-    el_stosu* old_ptr;
+    stack_item* old_ptr;
     old_ptr = *ptr;
     val=(*ptr)->value;
     *ptr = (*ptr)->next;
     free(old_ptr);
 
-printf("Zdjalem %d ze stosu\n",val);
+printf("%d was taken from the stack.\n",val);
 return val;
 }
 
@@ -50,24 +50,26 @@ int main()
 {
     int val;
     char input[30];
-    el_stosu* nowy_stos= NULL;
+    stack_item* new_stack= NULL;
     while(scanf("%s",input)>0)
     {
-        printf("Wczytalem %s\n",input);
-
         if(strcmp(input,"Push")==0)
         {
             scanf("%d",&val);
-            Push(val,&nowy_stos);
+            Push(val,&new_stack);
             continue;
         }
 
         if(strcmp(input,"Pop")==0)
         {
-            Pop(&nowy_stos);
+            Pop(&new_stack);
             continue;
         }
-            printf("\n***ERROR***\n***INVALID COMMAND***\n\n");
+        if(strcmp(input,"EXIT")==0)
+        {
+            return 0;
+        }
+            printf("\n***ERROR: INVALID COMMAND***\n\n");
     }
     return 0;
 }

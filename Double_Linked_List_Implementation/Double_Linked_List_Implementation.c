@@ -2,20 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct el_listy{
+typedef struct List_item{
 
 int value;
-struct el_listy* NEXT;
-struct el_listy* PREV;
+struct List_item* NEXT;
+struct List_item* PREV;
 
-}el_listy;
+}List_item;
 
 
-void Push_Head(int val, el_listy** head, el_listy** tail,int* number_of_elements)
+void Push_Head(int val, List_item** head, List_item** tail,int* number_of_elements)
 {
 
-    el_listy* new_element = (el_listy*)malloc(sizeof(el_listy));
-    el_listy* old_head = *head;
+    List_item* new_element = (List_item*)malloc(sizeof(List_item));
+    List_item* old_head = *head;
 
      if(*number_of_elements==0)
     {
@@ -34,10 +34,10 @@ void Push_Head(int val, el_listy** head, el_listy** tail,int* number_of_elements
     *head=new_element;
     (*number_of_elements)++;
 
-    printf("Wrzucono %d na czolo listy.\nLiczba elementow listy: %d\n",val,*number_of_elements);
+    printf(" %d was added to the head of the list.\nNumber of items: %d\n",val,*number_of_elements);
 }
 
-int Pop_HEAD(el_listy** head, int* number_of_elements)
+int Pop_HEAD(List_item** head, int* number_of_elements)
 {
    if(*number_of_elements==0)
     {
@@ -45,7 +45,7 @@ int Pop_HEAD(el_listy** head, int* number_of_elements)
         return 1;
     }
     int val;
-    el_listy* old_head;
+    List_item* old_head;
 
     old_head = *head;
     val=(*head)->value;
@@ -54,16 +54,16 @@ int Pop_HEAD(el_listy** head, int* number_of_elements)
     free(old_head);
     (*number_of_elements)--;
 
-    printf("Zdjalem z czola listy %d.\nLiczba elementow listy: %d\n",val,*number_of_elements);
+    printf(" %d was taken from the head of the list.\nNumber of items: %d\n",val,*number_of_elements);
 
     return val;
 }
 
-void Push_TAIL(int val, el_listy** head,el_listy** tail,int* number_of_elements)
+void Push_TAIL(int val, List_item** head,List_item** tail,int* number_of_elements)
 {
 
-    el_listy* new_element = (el_listy*)malloc(sizeof(el_listy));
-    el_listy* old_tail = *tail;
+    List_item* new_element = (List_item*)malloc(sizeof(List_item));
+    List_item* old_tail = *tail;
 
     if(*number_of_elements==0)
     {
@@ -83,10 +83,10 @@ void Push_TAIL(int val, el_listy** head,el_listy** tail,int* number_of_elements)
     *tail=new_element;
     (*number_of_elements)++;
 
-    printf("Wrzucono %d na ogon listy.\nLiczba elementow listy: %d\n",val,*number_of_elements);
+    printf(" %d was added to the tail of the list.\nNumber of items: %d\n",val,*number_of_elements);
 }
 
-int Pop_TAIL(el_listy** tail,int* number_of_elements)
+int Pop_TAIL(List_item** tail,int* number_of_elements)
 {
     if(*number_of_elements==0)
     {
@@ -94,7 +94,7 @@ int Pop_TAIL(el_listy** tail,int* number_of_elements)
         return 1;
     }
     int val;
-    el_listy* old_tail;
+    List_item* old_tail;
 
     old_tail = *tail;
     val=(*tail)->value;
@@ -103,7 +103,7 @@ int Pop_TAIL(el_listy** tail,int* number_of_elements)
     free(old_tail);
     (*number_of_elements)--;
 
-    printf("Zdjalem z ogona listy %d.\nLiczba elementow listy: %d\n",val,*number_of_elements);
+    printf(" %d was taken from the tail of the list.\nNumber of items: %d\n",val,*number_of_elements);
 
     return val;
 }
@@ -112,8 +112,8 @@ int Pop_TAIL(el_listy** tail,int* number_of_elements)
 int main()
 {
     int number_of_elements=0,val;
-	struct el_listy* HEAD=NULL;
-	struct el_listy* TAIL=NULL;
+	struct List_item* HEAD=NULL;
+	struct List_item* TAIL=NULL;
     char input[20];
 
     while(scanf("%19s",input)>0)
@@ -142,7 +142,7 @@ int main()
         }
         if(strcmp(input,"EXIT")==0)
             break;
-        printf("\n***ERROR: WRONG COMMAND***\n");
+        printf("\n***ERROR: INVALID COMMAND***\n");
     }
 
 
