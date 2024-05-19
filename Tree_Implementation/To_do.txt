@@ -1,6 +1,6 @@
-1. Prepare single item structure.				[]
+1. Prepare single item structure.				[X]
 
-2. Prepare adding item function.				[]
+2. Prepare adding item function.				[X]
 
 3. Prepare showing tree function.				[]
 
