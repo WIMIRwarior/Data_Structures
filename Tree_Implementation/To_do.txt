@@ -1,0 +1,17 @@
+1. Prepare single item structure.				[]
+
+2. Prepare adding item function.				[]
+
+3. Prepare showing tree function.				[]
+
+4. Prepare going through tree function.				[]
+
+5. Prepare showing selected item on the tree function.		[]
+
+6. Prepare deleting item function.				[]
+
+7. Test the program working.					[]
+
+8. Write the user manual.					[]
+
+

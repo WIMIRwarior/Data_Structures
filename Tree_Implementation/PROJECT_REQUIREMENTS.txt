@@ -1,0 +1,18 @@
+PROJECT NAME: Tree_Implementation
+
+MAIN GOAL OF THE PROJECT:
+	Create a program in C language that implemnets the "binary tree" data structure.
+
+DESCRIPTION OF THE NEEDED FEATURES:
+
+1. Program has to allows user to add, delete and going through tree items.
+
+2. Each item has to contain a integer value.
+
+3. There has to be possibility to print the whole tree.
+
+4. During operation program has to show and update the view of the whole tree with currently choosen item marked on it.
+
+5. When user deelet the item that is not a leaf the whole it's subtree should be deeleted aswell.
+
+6. During adding and deeleting items, memory should be allocated and freed dynamically.
