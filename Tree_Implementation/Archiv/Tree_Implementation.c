@@ -35,7 +35,7 @@ void Add_Item(int val,tree_item** tree,bool LR,int* number_of_items)  // At this
     else
     {
         new_tree_item->root=(*tree);
-        if(LR)
+        if(!LR)
         {
             (*tree)->left=new_tree_item;
         }
@@ -50,9 +50,43 @@ void Add_Item(int val,tree_item** tree,bool LR,int* number_of_items)  // At this
 
 }
 
-void Show_Tree(tree_item* item)  //WIP - nodes displaying in order of it's creation. Nodes should to be displayed in tree order.
+int Show_Tree(tree_item* item)  //WIP - nodes displaying in order of it's creation. Nodes should to be displayed in tree order.
 {
-    printf("%d ",item->value);
+    int offsetL=0, offsetR=0, offset=1;
+    if((item->left)!=NULL)
+    {
+        offsetL = Show_Tree(item->left);
+        printf("JESTEM!!!");
+    }
+    if((item->right)!=NULL)
+    {
+        offsetR = Show_Tree(item->right);
+        printf("JESTEM!!!");
+    }
+    if(item->left==NULL&&item->right==NULL)
+    {
+        return offset;
+    }
+
+    offset = offsetL+offsetR;
+
+        for(int i=0;i<offsetL;i++)
+        {
+            printf("0");
+        }
+        printf("\n");
+
+        for(int i=0;i<offsetR;i++)
+        {
+            printf("X");
+        }
+        printf("\n");
+
+    return offset;
+
+
+
+    /*printf("%d ",item->value);
     if(item->left!=NULL)
     {
         Show_Tree(item->left);
@@ -60,7 +94,7 @@ void Show_Tree(tree_item* item)  //WIP - nodes displaying in order of it's creat
     if(item->right!=NULL)
     {
         Show_Tree(item->right);
-    }
+    } */
 }
 
 
@@ -73,10 +107,10 @@ void Show_Tree(tree_item* item)  //WIP - nodes displaying in order of it's creat
 int main()
 {
     int number_of_items=0;
-    Add_Item(7,&SELECTED_ITEM,LEFT,&number_of_items);
+    Add_Item(7,&SELECTED_ITEM,RIGHT,&number_of_items);
     Add_Item(9,&SELECTED_ITEM,RIGHT,&number_of_items);
-    Add_Item(10,&SELECTED_ITEM,LEFT,&number_of_items);
-    Add_Item(11,&SELECTED_ITEM,LEFT,&number_of_items);
+    Add_Item(10,&SELECTED_ITEM,RIGHT,&number_of_items);
+    Add_Item(11,&SELECTED_ITEM,RIGHT,&number_of_items);
     Add_Item(12,&SELECTED_ITEM,RIGHT,&number_of_items);
     Add_Item(13,&SELECTED_ITEM,RIGHT,&number_of_items);
 
