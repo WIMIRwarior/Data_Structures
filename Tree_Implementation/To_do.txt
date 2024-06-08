@@ -2,16 +2,18 @@
 
 2. Prepare adding item function.				[X]
 
-3. Prepare showing tree function.				[]
+3. Prepare showing tree function.				[X]
 
-4. Prepare going through tree function.				[]
+4. Prepare going through tree function.				[X]
 
-5. Prepare showing selected item on the tree function.		[]
+5. Prepare showing selected item on the tree function.		[X]
 
-6. Prepare deleting item function.				[]
+6. Prepare deleting subtree of selected node function.		[X]
 
-7. Test the program working.					[]
+7. Prepare error control.					[]
 
-8. Write the user manual.					[]
+8. Test the program working.					[]
+
+9. Write the user manual.					[]
 
 

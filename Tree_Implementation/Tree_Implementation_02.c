@@ -3,10 +3,12 @@
 #include<time.h>
 #include<conio.h>
 
+#define COMPACT 0;
+
 //Global variables
 int number_of_tree_elements = 0;
-int OFFSET=6;
-char tree_table[20][255];
+int OFFSET=6,WIDTH=5,number_of_display_rows=20,number_of_display_colums=255;
+char tree_display[20][255];
 
 typedef struct tree_element
 {
@@ -46,7 +48,7 @@ void show_tree_element (tree_element* tree_element_selected)
   }
   if(tree_element_selected->RIGHT!=NULL)
   {
-    printf("    Right: %d",tree_element_selected->RIGHT->value);
+    printf("    Right: %d\n",tree_element_selected->RIGHT->value);
   }
   if(tree_element_selected->RIGHT==NULL)
   {
@@ -102,42 +104,83 @@ void add_tree_element (int L_or_R, tree_element ** local_root, int *number_of_tr
 }
 
 
-int print_tree(tree_element* current_node,int depth, int is_Left, int offset,char display[20][255])
+void show_tree(tree_element* root)
+{
+    for(int i=0;i<number_of_display_rows;i++)
     {
-        char data_to_print[10];
-        int width=5,Left_offset=0,Right_offset=0;
+        sprintf(tree_display[i],"%80s"," ");
+    }
 
-        sprintf(data_to_print,"(%3d)",current_node->value);
+    print_tree_into_display(root,0,0,0,tree_display);
 
-        Left_offset=print_tree(current_node->LEFT,depth+1,1,offset,display);
-        Right_offset=print_tree(current_node->RIGHT,depth+1,0,offset,display);
+    for(int i=0;i<number_of_display_rows;i++)
+    {
+        printf("%s\n",tree_display[i]);
+    }
 
-        if(depth&&is_Left)
-        {
+}
 
-        }
 
-        else if(depth&&!is_Left)
-        {
+int print_tree_into_display(tree_element* current_tree_node,int is_Left, int offset,int depth, char display[number_of_display_rows][number_of_display_colums])
+{
+    if(!current_tree_node)
+    {
+        return 0;
+    }
 
-        }
-        else
-        {
+    int L_offset=0, R_offset=0;
+    char node_value_in_display_format[WIDTH];
 
-        }
+    if(current_tree_node==SELECTED_TREE_ELEMENT)
+    {
+    sprintf(node_value_in_display_format,"[%.3d]",current_tree_node->value);
+    }
+    else
+    {
+        sprintf(node_value_in_display_format,"(%.3d)",current_tree_node->value);
+    }
 
-        return Left_offset+Right_offset+width;
+    L_offset = print_tree_into_display(current_tree_node->LEFT,1,offset,depth+1,display);
+    R_offset = print_tree_into_display(current_tree_node->RIGHT,0,L_offset+offset+WIDTH,depth+1,display);
 
+   for(int i=0;i<WIDTH;i++)
+    {
+        display[depth][L_offset+offset+i]=node_value_in_display_format[i];
     }
 
 
+    if(depth&&is_Left)
+    {
+        for(int i=0;i<R_offset+WIDTH;i++)
+        {
+            display[depth-1][offset+L_offset+i+WIDTH/2]='-';
+        }
+        display[depth-1][offset+L_offset+WIDTH/2]='+';
+    }
 
+    if(depth&&!is_Left)
+    {
+        for(int i=0;i<L_offset+WIDTH/2;i++)
+        {
+            display[depth-1][offset+i]='-';
+        }
+        display[depth-1][offset+L_offset+WIDTH/2]='+';
+    }
+
+return WIDTH+L_offset+R_offset;
+
+}
 
 
 
 
 void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_tree_elements)
 {
+
+
+ for (int i = 0; i < 20; i++)
+        sprintf(tree_display[i], "%80s", " ");
+
 
     show_tree_element(*tree_element_selected);
     int choose=0,go_out=1,new_value=0;
@@ -246,6 +289,8 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
         if(go_out)
         {
             show_tree_element(*tree_element_selected);
+
+            show_tree(tree_root);
         }
     }
 
@@ -254,7 +299,8 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
 void create_tree()
     {
        add_tree_element(0,&tree_root,&number_of_tree_elements);
-       move_throught_the_tree(&tree_root,&number_of_tree_elements);
+       SELECTED_TREE_ELEMENT = tree_root;
+       move_throught_the_tree(&SELECTED_TREE_ELEMENT,&number_of_tree_elements);
     }
 
 void remove_node(tree_element* tree_element_selected,int depth) // The possibility of choosing which side should be deleted has to be writen :)
@@ -282,10 +328,7 @@ void remove_node(tree_element* tree_element_selected,int depth) // The possibili
 int
 main ()
 {
-   for(int i=0;i<20;i++)
-        {
-            sprintf(tree_table[i],"%255s"," ");
-        }
+
 
   create_tree();
   return 0;
