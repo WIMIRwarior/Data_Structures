@@ -10,9 +10,9 @@
 
 6. Prepare deleting subtree of selected node function.		[X]
 
-7. Prepare error control.					[]
+7. Prepare error control.					[X]
 
-8. Test the program working.					[]
+8. Test the program working.					[X]
 
 9. Write the user manual.					[]
 

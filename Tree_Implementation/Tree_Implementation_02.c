@@ -1,15 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include<time.h>
 #include<conio.h>
 
-#define COMPACT 0;
-
-//Global variables
-int number_of_tree_elements = 0;
-int OFFSET=6,WIDTH=5,number_of_display_rows=20,number_of_display_colums=255;
-char tree_display[20][255];
-
+//ADDITIONAL TYPES:
 typedef struct tree_element
 {
   int value;
@@ -18,9 +13,82 @@ typedef struct tree_element
   struct tree_element* ROOT;
 } tree_element;
 
+
+//GLOBAL VARIABLES:
+int number_of_tree_elements = 0;
+int ERROR_CODE = 12345678;
+int OFFSET=6,WIDTH=5,number_of_display_rows=20,number_of_display_colums=255;
+char tree_display[20][255];
+
 tree_element* tree_root;
 tree_element *SELECTED_TREE_ELEMENT = NULL;
 
+
+
+//FUNCTIONS DECLARATIONS:
+int is_it_int();
+
+void show_tree_element (tree_element* tree_element_selected);
+
+int add_tree_element (int L_or_R, tree_element** local_root, int *number_of_tree_elements);
+
+void show_tree(tree_element* root);
+
+int print_tree_into_display(tree_element* current_tree_node,int is_Left, int offset,int depth, char display[number_of_display_rows][number_of_display_colums]);
+
+void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_tree_elements);
+
+void create_tree();
+
+void remove_node(tree_element* tree_element_selected,int depth);
+
+//===============MAIN===================================================================================================
+int
+main ()
+{
+
+  create_tree();
+  return 0;
+}
+//===============MAIN===================================================================================================
+
+//FUNCTIONS BODIES:
+
+void clear_input_buffer ()
+{
+    while ( getchar() != '\n' );
+}
+
+int is_it_int()
+{
+    char input_to_check[5];
+    scanf("%s",input_to_check);
+    int input_length=0;
+    input_length=strlen(input_to_check);
+
+    for(int i=1;i<input_length;i++)
+    {
+        if(input_to_check[0]=='0'&&input_length>1)
+        {
+            printf("\n***VALUE IS NOT THE INTEGER***\n");
+            sleep(2);
+            return ERROR_CODE;
+        }
+
+        else if(input_to_check[i]>='0'&&input_to_check[i]<='9')
+        {
+            continue;
+        }
+        else
+        {
+            printf("\n***VALUE IS NOT THE INTEGER***\n");
+            sleep(2);
+            return ERROR_CODE;
+        }
+    }
+
+    return atoi(input_to_check);
+}
 
 void show_tree_element (tree_element* tree_element_selected)
 {   //system("clear");
@@ -58,16 +126,31 @@ void show_tree_element (tree_element* tree_element_selected)
 
 
 
-void add_tree_element (int L_or_R, tree_element ** local_root, int *number_of_tree_elements)
+int add_tree_element (int L_or_R, tree_element** local_root, int *number_of_tree_elements)
 {
-    //system("clear");
-        system("cls");
+
+    system("cls");
 
     int val=0;
 
 
     printf("Type value of the new node.\n:");
-    scanf("%d",&val);
+
+    val = is_it_int();
+
+    if(val==ERROR_CODE)
+    {
+        printf("\n***ERROR: INVALID INPUT***\n");
+        sleep(2);
+        return 1;
+    }
+
+    if(val>999)
+    {
+        printf("\n***ERROR: VALUE TOO HIGH***\n");
+        sleep(2);
+        return 1;
+    }
 
   tree_element* new_tree_element =(tree_element*) malloc (sizeof (tree_element));
   new_tree_element->value = val;
@@ -87,20 +170,22 @@ void add_tree_element (int L_or_R, tree_element ** local_root, int *number_of_tr
 		{
 		  (*local_root)->LEFT = new_tree_element;
 		  new_tree_element->ROOT = (*local_root);
-		  printf ("dodalem z lewej\n");
+		  printf ("Left node added.\n");
 		}
 	  else
 		{
 		  (*local_root)->RIGHT = new_tree_element;
 		  new_tree_element->ROOT = (*local_root);
-		  printf ("dodalem z prawej\n");
+		  printf ("Right node added.\n");
 		}
 	}
 
   *local_root = new_tree_element;
   (*number_of_tree_elements)++;
+
   sleep(1);
- // printf ("%d ", *number_of_tree_elements);
+  clear_input_buffer();
+  return 0;
 }
 
 
@@ -172,23 +257,38 @@ return WIDTH+L_offset+R_offset;
 }
 
 
-
-
 void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_tree_elements)
 {
 
+if(!(*tree_element_selected))
+{
+    printf("\nMove through tree:   Cos nie tak z drzewem\n");
+    sleep(3);
+    return 1;
+}
+
 
  for (int i = 0; i < 20; i++)
-        sprintf(tree_display[i], "%80s", " ");
+        {
+            sprintf(tree_display[i], "%80s", " ");
+        }
 
 
-    show_tree_element(*tree_element_selected);
     int choose=0,go_out=1,new_value=0;
 
     while(go_out)
     {
-        printf("\nWhere want you go or what you want to do?\n0-to root ,1-to left branch,2-to right branch,3-add/change left child, 4-add/change right child,\n5-remove selected node,6-exit\n:");
-        scanf("%d",&choose);
+        show_tree_element(*tree_element_selected);
+        show_tree(tree_root);
+        printf("\nWhere want you go or what you want to do?\n0-to root ,1-to left branch,2-to right branch,3-add/change left child, 4-add/change right child,\n5-remove branches of selected node,6-exit\n:");
+        choose = is_it_int();
+        if(choose==ERROR_CODE)
+        {
+            printf("\n***ERROR: INVALID INPUT***\n");
+            sleep(2);
+            continue;
+        }
+
         switch (choose)
         {
             case 0:
@@ -224,7 +324,7 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
                 }
                 else
                 {
-                    printf("\n***THIS NODE HAS NO LEFT RIGHT!***\n");
+                    printf("\n***THIS NODE HAS NO RIGHT CHILD!***\n");
                     sleep(2);
                 }
             break;
@@ -233,11 +333,26 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
             if((*tree_element_selected)->LEFT)
             {
                 printf("The node already exist. Do You want to change it's value?\n1-YES 2-NO\n:");
-                scanf("%d",&choose);
+
+                choose = is_it_int();
+                if(choose==ERROR_CODE)
+                {
+                    printf("\n***ERROR: INVALID INPUT***\n");
+                    sleep(2);
+                    continue;
+                }
+
                 if(choose==1)
                 {
                     printf("\nSet new value: ");
-                    scanf("%d",&new_value);
+
+                    new_value = is_it_int();
+                    if(new_value==ERROR_CODE)
+                    {
+                        printf("\n***ERROR: INVALID INPUT***\n");
+                        sleep(2);
+                        continue;
+                    }
                     (*tree_element_selected)->LEFT->value=new_value;
                 }
                 else
@@ -248,6 +363,7 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
             else
             {
                 add_tree_element (0, tree_element_selected, &number_of_tree_elements);
+
             }
             break;
 
@@ -255,11 +371,26 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
             if((*tree_element_selected)->RIGHT)
             {
                 printf("The node already exist. Do You want to change it's value?\n1-YES 2-NO\n:");
-                scanf("%d",&choose);
+
+                choose = is_it_int();
+                if(choose==ERROR_CODE)
+                {
+                    printf("\n***ERROR: INVALID INPUT***\n");
+                    sleep(2);
+                    continue;
+                }
+
                 if(choose==1)
                 {
                     printf("\nSet new value: ");
-                    scanf("%d",&new_value);
+
+                    new_value = is_it_int();
+                    if(new_value==ERROR_CODE)
+                    {
+                        printf("\n***ERROR: INVALID INPUT***\n");
+                        sleep(2);
+                        continue;
+                    }
                     (*tree_element_selected)->RIGHT->value=new_value;
                 }
                 else
@@ -274,11 +405,52 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
             break;
 
             case 5:
-            remove_node(*tree_element_selected,0);
-            break;
+              if((*tree_element_selected)->LEFT&&(*tree_element_selected)->RIGHT)
+              {
+                  printf("\nWhich branch do You want to remove?\n1)LEFT    2)RIGHT  3)BOTH\n");
+                  choose = is_it_int();
+                if(choose==ERROR_CODE)
+                {
+                    printf("\n***ERROR: INVALID INPUT***\n");
+                    sleep(2);
+                    return 1;
+                }
+                else
+                {
+                    switch(choose)
+                    {
+                        case 1:
+                            remove_node((*tree_element_selected)->LEFT,0);
+                            free((*tree_element_selected)->LEFT);
+                            (*tree_element_selected)->LEFT=NULL;
+                            break;
+
+                        case 2:
+                            remove_node((*tree_element_selected)->RIGHT,0);
+                            free((*tree_element_selected)->RIGHT);
+                            (*tree_element_selected)->RIGHT=NULL;
+                            break;
+
+                        case 3:
+                            remove_node(*tree_element_selected,0);
+                            break;
+
+                        default:
+                            printf("\n***ERROR: INVALID INPUT***\n");
+                            sleep(2);
+                    }
+                }
+              }
+              else
+              {
+                remove_node(*tree_element_selected,0);
+              }
+              break;
 
             case 6:
             go_out=0;
+            system("cls");
+            printf("\n\nGOOD BYE :) \n\n");
             break;
 
             default:
@@ -286,21 +458,26 @@ void move_throught_the_tree(tree_element** tree_element_selected,int* number_of_
             sleep(2);
 
         }
-        if(go_out)
-        {
-            show_tree_element(*tree_element_selected);
-
-            show_tree(tree_root);
-        }
     }
-
 }
 
 void create_tree()
-    {
-       add_tree_element(0,&tree_root,&number_of_tree_elements);
-       SELECTED_TREE_ELEMENT = tree_root;
-       move_throught_the_tree(&SELECTED_TREE_ELEMENT,&number_of_tree_elements);
+    { int was_tree_create=1;
+        while(was_tree_create)
+        {
+           if(!(add_tree_element(0,&tree_root,&number_of_tree_elements)))
+           {
+               sleep(2);
+           SELECTED_TREE_ELEMENT = tree_root;
+           move_throught_the_tree(&SELECTED_TREE_ELEMENT,&number_of_tree_elements);
+           was_tree_create=0;
+           }
+           else
+           {
+               printf("\n***ERROR: CAN NOT CREATE TREE***\n");
+               sleep(2);
+           }
+        }
     }
 
 void remove_node(tree_element* tree_element_selected,int depth) // The possibility of choosing which side should be deleted has to be writen :)
@@ -324,12 +501,3 @@ void remove_node(tree_element* tree_element_selected,int depth) // The possibili
             }
         }
 
-
-int
-main ()
-{
-
-
-  create_tree();
-  return 0;
-}
